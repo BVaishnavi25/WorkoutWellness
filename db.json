@@ -1,0 +1,107 @@
+{
+  "users": [],
+  "exercises": [
+    {
+      "id": 1,
+      "name": "Incline Dumbbell Press",
+      "cat": "CHEST",
+      "tag": "STRENGTH",
+      "level": "ADVANCED",
+      "equip": "DUMBBELLS",
+      "desc": "Targets the upper chest. Keep elbows at 45\u00b0.",
+      "video": "https://www.youtube.com/embed/QEY2z5LtB9Y"
+    },
+    {
+      "id": 2,
+      "name": "Weighted Pull-Ups",
+      "cat": "BACK",
+      "tag": "STRENGTH",
+      "level": "EXPERT",
+      "equip": "BODYWEIGHT+",
+      "desc": "Compound lat and pulling-power builder.",
+      "video": "https://www.youtube.com/embed/QZue7F_Zk3A"
+    },
+    {
+      "id": 3,
+      "name": "Kettlebell Swings",
+      "cat": "FULL BODY",
+      "tag": "HIIT",
+      "level": "INTERMEDIATE",
+      "equip": "KETTLEBELL",
+      "desc": "Explosive hip-hinge posterior chain work.",
+      "video": ""
+    },
+    {
+      "id": 4,
+      "name": "Pigeon Pose",
+      "cat": "MOBILITY",
+      "tag": "YOGA",
+      "level": "BEGINNER",
+      "equip": "MAT",
+      "desc": "Deep hip flexor and rotator stretch.",
+      "video": ""
+    },
+    {
+      "id": 5,
+      "name": "Barbell Back Squat",
+      "cat": "LEGS",
+      "tag": "STRENGTH",
+      "level": "ADVANCED",
+      "equip": "BARBELL",
+      "desc": "Foundational quad, glute and core builder.",
+      "video": ""
+    },
+    {
+      "id": 6,
+      "name": "Battle Ropes",
+      "cat": "CARDIO",
+      "tag": "HIIT",
+      "level": "INTERMEDIATE",
+      "equip": "ROPES",
+      "desc": "High intensity conditioning drill.",
+      "video": ""
+    },
+    {
+      "id": 7,
+      "name": "Bodyweight Glute Bridge",
+      "cat": "LEGS",
+      "tag": "STRENGTH",
+      "level": "BEGINNER",
+      "equip": "NONE",
+      "desc": "Beginner-friendly glute and hip activation.",
+      "video": ""
+    },
+    {
+      "id": 8,
+      "name": "Seated Cable Row",
+      "cat": "BACK",
+      "tag": "STRENGTH",
+      "level": "BEGINNER",
+      "equip": "CABLE MACHINE",
+      "desc": "Beginner-friendly mid-back builder.",
+      "video": ""
+    }
+  ],
+  "plans": [
+    {
+      "id": 0,
+      "name": "Active Recovery & Mobility",
+      "level": "Beginner"
+    },
+    {
+      "id": 1,
+      "name": "Foundation 101",
+      "level": "Beginner"
+    },
+    {
+      "id": 2,
+      "name": "Hypertrophy Max",
+      "level": "Intermediate"
+    },
+    {
+      "id": 3,
+      "name": "Elite Powerlifting",
+      "level": "Advanced"
+    }
+  ]
+}
