@@ -1,0 +1,2041 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workout Wellness</title>
+  <style>
+    :root {
+      --panel: #181818;
+      --panel2: #1f1f1f;
+      --border: #3a3a3a;
+      --lime: #d4ff2b;
+      --cyan: #3ee6e6;
+      --pink: #ff2ea6;
+      --text: #f5f5f5;
+      --muted: #a8a8b0;
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: #000;
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      overflow-x: hidden
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer
+    }
+
+    /* ---- FitTrackBackground, ported 1:1 from the supplied React/Framer Motion
+   component into plain CSS + HTML. This app has no React runtime (it's a
+   single vanilla HTML/JS file), so framer-motion/lucide-react can't be
+   imported directly — every motion.div animate={{...}} call below has been
+   translated into an equivalent CSS @keyframes rule with the same duration,
+   delay and easing, and the six lucide icons were redrawn as inline SVGs
+   (stroke=currentColor, size 22, strokeWidth 1.1) so nothing depends on an
+   external icon/library CDN ever failing to load. Visual result is the same
+   fixed, non-blocking background with rings, dot streams, hex clusters,
+   side lines, pulsing points and floating fitness-icon circles. */
+    body {
+      margin: 0;
+      background: #010101;
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      overflow-x: hidden;
+      scroll-behavior: smooth
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer
+    }
+
+    ::-webkit-scrollbar {
+      width: 7px
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #030403
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(150, 170, 70, .45);
+      border-radius: 20px
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(170, 195, 80, .7)
+    }
+
+    .fittrack-background {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+      background: radial-gradient(ellipse at center, #181b13 0%, #0e100c 30%, #070807 62%, #010101 100%)
+    }
+
+    .fittrack-background::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(ellipse at center, rgba(157, 181, 63, .075), transparent 48%)
+    }
+
+    /* curved lines */
+    .ring {
+      position: absolute;
+      top: -22%;
+      height: 145%;
+      border-radius: 50%;
+      will-change: transform
+    }
+
+    .ring-left-1 {
+      left: -47%;
+      width: 61%;
+      border-right: 1px solid rgba(145, 155, 125, .38);
+      animation: ringLeft1 12s ease-in-out infinite
+    }
+
+    .ring-left-2 {
+      left: -44%;
+      width: 55%;
+      border-right: 1.5px solid rgba(175, 195, 78, .62);
+      animation: ringLeft2 10s ease-in-out infinite
+    }
+
+    .ring-left-3 {
+      left: -41%;
+      width: 49%;
+      border-right: 1px solid rgba(135, 145, 115, .34);
+      animation: ringLeft3 14s ease-in-out infinite
+    }
+
+    .ring-right-1 {
+      right: -47%;
+      width: 61%;
+      border-left: 1px solid rgba(145, 155, 125, .38);
+      animation: ringRight1 12s ease-in-out infinite
+    }
+
+    .ring-right-2 {
+      right: -44%;
+      width: 55%;
+      border-left: 1.5px solid rgba(175, 195, 78, .62);
+      animation: ringRight2 10s ease-in-out infinite
+    }
+
+    .ring-right-3 {
+      right: -41%;
+      width: 49%;
+      border-left: 1px solid rgba(135, 145, 115, .34);
+      animation: ringRight3 14s ease-in-out infinite
+    }
+
+    @keyframes ringLeft1 {
+
+      0%,
+      100% {
+        transform: translateX(0) rotate(-9deg)
+      }
+
+      50% {
+        transform: translateX(4px) rotate(-8.6deg)
+      }
+    }
+
+    @keyframes ringLeft2 {
+
+      0%,
+      100% {
+        transform: translateX(0) rotate(-9deg)
+      }
+
+      50% {
+        transform: translateX(5px) rotate(-8.5deg)
+      }
+    }
+
+    @keyframes ringLeft3 {
+
+      0%,
+      100% {
+        transform: translateX(0) rotate(-9deg)
+      }
+
+      50% {
+        transform: translateX(3px) rotate(-9deg)
+      }
+    }
+
+    @keyframes ringRight1 {
+
+      0%,
+      100% {
+        transform: translateX(0) rotate(9deg)
+      }
+
+      50% {
+        transform: translateX(-4px) rotate(8.6deg)
+      }
+    }
+
+    @keyframes ringRight2 {
+
+      0%,
+      100% {
+        transform: translateX(0) rotate(9deg)
+      }
+
+      50% {
+        transform: translateX(-5px) rotate(8.5deg)
+      }
+    }
+
+    @keyframes ringRight3 {
+
+      0%,
+      100% {
+        transform: translateX(0) rotate(9deg)
+      }
+
+      50% {
+        transform: translateX(-3px) rotate(9deg)
+      }
+    }
+
+    /* outer curves */
+    .outer-curve {
+      position: absolute;
+      top: -15%;
+      width: 32%;
+      height: 130%;
+      border-radius: 50%
+    }
+
+    .outer-curve.left {
+      left: -22%;
+      border-right: 1px solid rgba(115, 125, 105, .22);
+      animation: outerLeft 13s ease-in-out infinite
+    }
+
+    .outer-curve.right {
+      right: -22%;
+      border-left: 1px solid rgba(115, 125, 105, .22);
+      animation: outerRight 13s ease-in-out infinite
+    }
+
+    @keyframes outerLeft {
+
+      0%,
+      100% {
+        transform: translateX(0) rotate(-7deg)
+      }
+
+      50% {
+        transform: translateX(3px) rotate(-7deg)
+      }
+    }
+
+    @keyframes outerRight {
+
+      0%,
+      100% {
+        transform: translateX(0) rotate(7deg)
+      }
+
+      50% {
+        transform: translateX(-3px) rotate(7deg)
+      }
+    }
+
+    /* continuous moving dots, top-to-bottom, seamless loop */
+    .dot-stream {
+      position: absolute;
+      width: 120px;
+      height: 100vh;
+      overflow: hidden;
+      opacity: .45
+    }
+
+    .dot-stream-left {
+      left: 6%;
+      top: 0
+    }
+
+    .dot-stream-right {
+      right: 6%;
+      top: 0
+    }
+
+    .dot-pattern {
+      position: absolute;
+      width: 120px;
+      height: 200%;
+      background-image: radial-gradient(circle, rgba(183, 205, 83, .65) 1px, transparent 1.5px);
+      background-size: 17px 17px;
+      filter: drop-shadow(0 0 2px rgba(166, 190, 70, .25));
+      animation: dotFlow 6s linear infinite
+    }
+
+    @keyframes dotFlow {
+      from {
+        transform: translateY(-50%)
+      }
+
+      to {
+        transform: translateY(0%)
+      }
+    }
+
+    /* hexagon pattern */
+    .hex-group {
+      position: absolute;
+      width: 125px;
+      height: 240px;
+      opacity: .18
+    }
+
+    .hex-left {
+      left: -65px;
+      top: 6%;
+      animation: hexLeft 9s ease-in-out infinite
+    }
+
+    .hex-right {
+      right: -65px;
+      top: 6%;
+      animation: hexRight 9s ease-in-out infinite
+    }
+
+    @keyframes hexLeft {
+
+      0%,
+      100% {
+        transform: translateY(0);
+        opacity: .12
+      }
+
+      50% {
+        transform: translateY(-6px);
+        opacity: .2
+      }
+    }
+
+    @keyframes hexRight {
+
+      0%,
+      100% {
+        transform: translateY(0);
+        opacity: .12
+      }
+
+      50% {
+        transform: translateY(6px);
+        opacity: .2
+      }
+    }
+
+    .hex {
+      position: absolute;
+      width: 41px;
+      height: 47px;
+      border: 1px solid rgba(130, 140, 120, .5);
+      clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)
+    }
+
+    .hex:nth-child(1) {
+      left: 0;
+      top: 0
+    }
+
+    .hex:nth-child(2) {
+      left: 37px;
+      top: 0
+    }
+
+    .hex:nth-child(3) {
+      left: 18px;
+      top: 34px
+    }
+
+    .hex:nth-child(4) {
+      left: 55px;
+      top: 34px
+    }
+
+    .hex:nth-child(5) {
+      left: 37px;
+      top: 68px
+    }
+
+    .hex:nth-child(6) {
+      left: 74px;
+      top: 68px
+    }
+
+    /* side lines */
+    .side-decoration {
+      position: absolute;
+      top: 0;
+      width: 70px;
+      height: 100%;
+      opacity: .42
+    }
+
+    .side-left {
+      left: -37px;
+      animation: sideLeft 6s ease-in-out infinite
+    }
+
+    .side-right {
+      right: -37px;
+      animation: sideRight 6s ease-in-out infinite
+    }
+
+    @keyframes sideLeft {
+
+      0%,
+      100% {
+        transform: translateX(0);
+        opacity: .25
+      }
+
+      50% {
+        transform: translateX(3px);
+        opacity: .48
+      }
+    }
+
+    @keyframes sideRight {
+
+      0%,
+      100% {
+        transform: translateX(0);
+        opacity: .25
+      }
+
+      50% {
+        transform: translateX(-3px);
+        opacity: .48
+      }
+    }
+
+    .side-decoration span {
+      position: absolute;
+      width: 92px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(158, 181, 78, .82), transparent)
+    }
+
+    .side-decoration span:nth-child(1) {
+      top: 8%;
+      transform: rotate(43deg)
+    }
+
+    .side-decoration span:nth-child(2) {
+      top: 30%;
+      transform: rotate(-43deg)
+    }
+
+    .side-decoration span:nth-child(3) {
+      top: 70%;
+      transform: rotate(43deg)
+    }
+
+    .side-decoration span:nth-child(4) {
+      top: 92%;
+      transform: rotate(-43deg)
+    }
+
+    /* small green points */
+    .green-point {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #aec655;
+      box-shadow: 0 0 7px rgba(174, 198, 85, .8);
+      animation: pointPulse 2.5s ease-in-out infinite
+    }
+
+    .point-1 {
+      left: 3%;
+      top: 34%;
+      animation-delay: .4s
+    }
+
+    .point-2 {
+      left: 5%;
+      top: 57%;
+      animation-delay: .8s
+    }
+
+    .point-3 {
+      right: 3%;
+      top: 34%;
+      animation-delay: 1.2s
+    }
+
+    .point-4 {
+      right: 5%;
+      top: 57%;
+      animation-delay: 1.6s
+    }
+
+    @keyframes pointPulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: .4
+      }
+
+      50% {
+        transform: scale(1.6);
+        opacity: .9
+      }
+    }
+
+    /* ---- middle-of-page additions (same visual language as the edge decor) ---- */
+    /* center radar/pulse rings — a slow sonar-style ping, evokes a heart-rate/goal target */
+    .center-pulse {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 0;
+      height: 0
+    }
+
+    .pulse-ring {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 180px;
+      height: 180px;
+      margin: -90px 0 0 -90px;
+      border-radius: 50%;
+      border: 1px solid rgba(212, 255, 43, .35);
+      opacity: 0;
+      animation: pulseRing 4.5s ease-out infinite
+    }
+
+    .pulse-ring:nth-child(2) {
+      animation-delay: 1.5s;
+      border-color: rgba(62, 230, 230, .3)
+    }
+
+    .pulse-ring:nth-child(3) {
+      animation-delay: 3s
+    }
+
+    @keyframes pulseRing {
+      0% {
+        transform: scale(.4);
+        opacity: .55
+      }
+
+      80% {
+        opacity: 0
+      }
+
+      100% {
+        transform: scale(1.15);
+        opacity: 0
+      }
+    }
+
+    /* small center hex micro-cluster, lower half of the page */
+    .hex-center {
+      position: absolute;
+      left: 50%;
+      margin-left: -56px;
+      top: 58%;
+      width: 112px;
+      height: 80px;
+      opacity: .1;
+      animation: hexCenter 11s ease-in-out infinite
+    }
+
+    .hex-center .hex {
+      width: 35px;
+      height: 40px
+    }
+
+    .hex-center .hex:nth-child(1) {
+      left: 0;
+      top: 0
+    }
+
+    .hex-center .hex:nth-child(2) {
+      left: 38px;
+      top: 20px
+    }
+
+    .hex-center .hex:nth-child(3) {
+      left: 76px;
+      top: 0
+    }
+
+    @keyframes hexCenter {
+
+      0%,
+      100% {
+        transform: translateY(0);
+        opacity: .08
+      }
+
+      50% {
+        transform: translateY(-5px);
+        opacity: .16
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+
+      .pulse-ring,
+      .hex-center {
+        animation: none !important
+      }
+    }
+
+    /* fitness icon circles */
+    .fitness-icon {
+      position: absolute;
+      z-index: 8;
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: #747a70;
+      background: radial-gradient(circle, #191c17 0%, #0b0d0a 58%, #010201 100%);
+      border: 1px solid rgba(130, 140, 120, .48);
+      box-shadow: 0 0 0 2px rgba(0, 0, 0, .9), 0 0 0 3px rgba(145, 170, 62, .14), inset 0 0 16px rgba(0, 0, 0, .95);
+      opacity: 0;
+      animation: iconFadeIn .7s ease forwards, iconFloat 4s ease-in-out infinite;
+      transition: transform .25s ease, color .25s ease;
+      pointer-events: auto
+    }
+
+    .fitness-icon:hover {
+      transform: scale(1.15);
+      color: #b4ca5d
+    }
+
+    .fitness-icon::before {
+      content: "";
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      border: 1px solid rgba(160, 184, 70, .52);
+      border-top-color: transparent;
+      border-bottom-color: transparent;
+      transform: rotate(28deg)
+    }
+
+    .fitness-icon::after {
+      content: "";
+      position: absolute;
+      inset: 5px;
+      border-radius: 50%;
+      border: 1px dashed rgba(120, 130, 110, .15)
+    }
+
+    .fitness-icon svg {
+      width: 22px;
+      height: 22px;
+      position: relative
+    }
+
+    @keyframes iconFadeIn {
+      from {
+        opacity: 0;
+        transform: scale(.7)
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1)
+      }
+    }
+
+    @keyframes iconFloat {
+
+      0%,
+      100% {
+        transform: scale(1) translateY(0)
+      }
+
+      50% {
+        transform: scale(1.04) translateY(-4px)
+      }
+    }
+
+    @media(max-width:900px) {
+      .fitness-icon {
+        width: 46px;
+        height: 46px
+      }
+
+      .fitness-icon svg {
+        width: 20px;
+        height: 20px
+      }
+
+      .dot-stream {
+        transform: scale(.8)
+      }
+    }
+
+    @media(max-width:600px) {
+      .fitness-icon {
+        width: 40px;
+        height: 40px
+      }
+
+      .fitness-icon svg {
+        width: 17px;
+        height: 17px
+      }
+
+      .dot-stream {
+        transform: scale(.65)
+      }
+
+      .hex-group {
+        opacity: .08
+      }
+
+      .ring,
+      .outer-curve {
+        opacity: .55
+      }
+
+      .side-decoration {
+        opacity: .2
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+
+      .ring,
+      .outer-curve,
+      .dot-pattern,
+      .hex-left,
+      .hex-right,
+      .side-left,
+      .side-right,
+      .green-point,
+      .fitness-icon {
+        animation: none !important
+      }
+    }
+
+    header.nav,
+    main,
+    .toast {
+      position: relative;
+      z-index: 1
+    }
+
+    header.nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 26px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 10px;
+      backdrop-filter: blur(10px);
+      background: rgba(8, 8, 8, 0.6)
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 18px;
+      text-shadow: 0 1px 6px rgba(0, 0, 0, .7)
+    }
+
+    .logo span {
+      color: var(--lime)
+    }
+
+    .navlinks {
+      display: flex;
+      gap: 14px;
+      font-size: 11px;
+      letter-spacing: .4px;
+      color: var(--muted);
+      font-weight: 600;
+      flex-wrap: wrap;
+      overflow-x: auto
+    }
+
+    .navlinks a {
+      padding: 6px 0;
+      border-bottom: 2px solid transparent;
+      text-shadow: 0 1px 6px rgba(0, 0, 0, .7);
+      white-space: nowrap
+    }
+
+    .navlinks a.active {
+      color: var(--text);
+      border-color: var(--lime)
+    }
+
+    .navright {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-shadow: 0 1px 6px rgba(0, 0, 0, .7)
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #333;
+      border: 2px solid var(--lime)
+    }
+
+    .pill {
+      font-size: 9px;
+      color: var(--lime);
+      font-weight: 700
+    }
+
+    main {
+      padding: 22px 26px 60px;
+      max-width: 1200px;
+      margin: 0 auto
+    }
+
+    h1 {
+      font-size: 26px;
+      margin: 0 0 6px;
+      text-shadow: 0 2px 16px rgba(0, 0, 0, .85)
+    }
+
+    .sub {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 18px;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, .75)
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, .5)
+    }
+
+    .stat-card {
+      border-left: 3px solid var(--lime);
+      border-radius: 12px;
+      background: var(--panel);
+      padding: 14px 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, .45)
+    }
+
+    .stat-card.cyan {
+      border-left-color: var(--cyan)
+    }
+
+    .stat-card.pink {
+      border-left-color: var(--pink)
+    }
+
+    .stat-card .label {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: .5px;
+      margin-bottom: 4px
+    }
+
+    .stat-card .value {
+      font-size: 20px;
+      font-weight: 800
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: var(--lime);
+      color: #111;
+      font-weight: 700;
+      padding: 11px 18px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      box-shadow: 0 4px 16px rgba(212, 255, 43, .3)
+    }
+
+    .btn.secondary {
+      background: var(--panel2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, .4);
+
+    }
+
+    .btn:disabled {
+      opacity: .4;
+      cursor: not-allowed
+    }
+
+    .badge {
+      font-size: 9px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 20px;
+      background: #2a2a2a;
+      color: var(--muted);
+      letter-spacing: .5px;
+
+      height: 23px;
+    }
+
+    .badge.lime {
+      background: var(--lime);
+      color: #111
+    }
+
+    .tag {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: .3px
+    }
+
+    .progress-track {
+      height: 6px;
+      background: #2a2a2a;
+      border-radius: 6px;
+      overflow: hidden
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--lime)
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 18px
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .row span.v {
+      color: var(--text);
+      font-weight: 600
+    }
+
+    .chip {
+      padding: 7px 14px;
+      border-radius: 20px;
+      background: var(--panel2);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid var(--border)
+    }
+
+    .chip.active {
+      background: var(--lime);
+      color: #111;
+      border-color: var(--lime)
+    }
+
+    .exercise-card {
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 26px rgba(0, 0, 0, .5)
+    }
+
+    .exercise-img {
+      height: 110px;
+      background: linear-gradient(135deg, #2a2a2a, #161616);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative
+    }
+
+    .playbtn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--lime);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #111;
+      font-weight: 700
+    }
+
+    .exercise-body {
+      padding: 14px
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--lime);
+      color: #111;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 13px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .4);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: .25s;
+      z-index: 99;
+      max-width: 320px
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    .section {
+      display: none
+    }
+
+    .section.active {
+      display: block
+    }
+
+    h2 {
+      font-size: 18px;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, .8)
+    }
+
+    input[type=text],
+    input[type=email],
+    input[type=password],
+    input[type=number] {
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 11px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      width: 100%
+    }
+
+    label {
+      font-size: 11px;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 6px
+    }
+
+    .note {
+      font-size: 11px;
+      color: var(--cyan);
+      background: rgba(20, 20, 20, .55);
+      border: 1px solid rgba(62, 230, 230, .3);
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-bottom: 16px
+    }
+
+    .warn {
+      font-size: 11px;
+      color: var(--pink);
+      background: rgba(20, 20, 20, .55);
+      border: 1px solid rgba(255, 46, 166, .3);
+      padding: 8px 12px;
+      border-radius: 8px;
+      margin-top: 8px
+    }
+
+    .rec {
+      font-size: 11px;
+      color: var(--lime);
+      margin-top: 8px
+    }
+
+    @media(max-width:900px) {
+      .two-col {
+        grid-template-columns: 1fr
+      }
+    }
+
+    @media(max-width:640px) {
+      main {
+        padding: 16px
+      }
+
+      h1 {
+        font-size: 22px
+      }
+
+      .card {
+        padding: 14px
+      }
+    }
+
+    @media(max-width:1024px) {
+      #planGrid {
+        grid-template-columns: repeat(2, 1fr) !important
+      }
+
+      .sec-exercises .grid[style*="repeat(4,1fr)"] {
+        grid-template-columns: repeat(2, 1fr) !important
+      }
+    }
+
+    @media(max-width:640px) {
+      #planGrid {
+        grid-template-columns: 1fr !important
+      }
+
+      #schedGrid {
+        grid-template-columns: repeat(2, 1fr) !important
+      }
+
+      .grid[style*="repeat(4,1fr)"] {
+        grid-template-columns: 1fr !important
+      }
+
+      .grid[style*="1fr 1fr"] {
+        grid-template-columns: 1fr !important
+      }
+
+      header.nav .navlinks {
+        gap: 10px;
+        font-size: 10px
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="fittrack-background" aria-hidden="true">
+    <div class="ring ring-left-1"></div>
+    <div class="ring ring-left-2"></div>
+    <div class="ring ring-left-3"></div>
+    <div class="ring ring-right-1"></div>
+    <div class="ring ring-right-2"></div>
+    <div class="ring ring-right-3"></div>
+
+    <div class="outer-curve left"></div>
+    <div class="outer-curve right"></div>
+
+    <div class="dot-stream dot-stream-left">
+      <div class="dot-pattern"></div>
+    </div>
+    <div class="dot-stream dot-stream-right">
+      <div class="dot-pattern"></div>
+    </div>
+
+    <div class="hex-group hex-left">
+      <div class="hex"></div>
+      <div class="hex"></div>
+      <div class="hex"></div>
+      <div class="hex"></div>
+      <div class="hex"></div>
+      <div class="hex"></div>
+    </div>
+    <div class="hex-group hex-right">
+      <div class="hex"></div>
+      <div class="hex"></div>
+      <div class="hex"></div>
+      <div class="hex"></div>
+      <div class="hex"></div>
+      <div class="hex"></div>
+    </div>
+
+    <div class="side-decoration side-left"><span></span><span></span><span></span><span></span></div>
+    <div class="side-decoration side-right"><span></span><span></span><span></span><span></span></div>
+
+    <div class="green-point point-1"></div>
+    <div class="green-point point-2"></div>
+    <div class="green-point point-3"></div>
+    <div class="green-point point-4"></div>
+    <div class="green-point" style="left:48%;top:13%;animation-delay:.6s"></div>
+    <div class="green-point" style="left:52%;top:87%;animation-delay:1s"></div>
+    <div class="green-point" style="left:22%;top:8%;animation-delay:.2s"></div>
+    <div class="green-point" style="left:78%;top:24%;animation-delay:1.4s"></div>
+    <div class="green-point" style="left:33%;top:62%;animation-delay:1.8s"></div>
+    <div class="green-point" style="left:67%;top:48%;animation-delay:2.2s"></div>
+    <div class="green-point" style="left:15%;top:80%;animation-delay:.9s"></div>
+    <div class="green-point" style="left:85%;top:66%;animation-delay:2.5s"></div>
+    <div class="green-point" style="left:40%;top:93%;animation-delay:1.1s"></div>
+    <div class="green-point" style="left:60%;top:5%;animation-delay:1.7s"></div>
+    <div class="green-point" style="left:10%;top:38%;animation-delay:.3s"></div>
+    <div class="green-point" style="left:90%;top:42%;animation-delay:2s"></div>
+    <div class="green-point" style="left:28%;top:20%;animation-delay:1.3s"></div>
+    <div class="green-point" style="left:72%;top:78%;animation-delay:.5s"></div>
+    <div class="green-point" style="left:46%;top:30%;animation-delay:2.4s"></div>
+    <div class="green-point" style="left:55%;top:70%;animation-delay:.8s"></div>
+    <div class="green-point" style="left:8%;top:60%;animation-delay:1.9s"></div>
+    <div class="green-point" style="left:92%;top:15%;animation-delay:1.2s"></div>
+    <div class="green-point" style="left:37%;top:8%;animation-delay:2.7s"></div>
+    <div class="green-point" style="left:63%;top:92%;animation-delay:.4s"></div>
+    <div class="green-point" style="left:19%;top:95%;animation-delay:1.6s"></div>
+    <div class="green-point" style="left:81%;top:88%;animation-delay:2.1s"></div>
+
+    <div class="center-pulse">
+      <div class="pulse-ring"></div>
+      <div class="pulse-ring"></div>
+      <div class="pulse-ring"></div>
+    </div>
+
+    <div class="hex-center">
+      <div class="hex"></div>
+      <div class="hex"></div>
+      <div class="hex"></div>
+    </div>
+
+    <!-- Dumbbell -->
+    <div class="fitness-icon" style="left:1.2%;top:18%;animation-delay:0s">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"
+        stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12" />
+        <line x1="9" y1="12" x2="15" y2="12" stroke-width="2.2" />
+        <rect x="1.5" y="7" width="4.5" height="10" rx="1.4" />
+        <rect x="18" y="7" width="4.5" height="10" rx="1.4" />
+        <rect x="4.5" y="9" width="2.2" height="6" rx="0.8" />
+        <rect x="17.3" y="9" width="2.2" height="6" rx="0.8" />
+      </svg>
+    </div>
+    <!-- Heart Pulse -->
+    <div class="fitness-icon" style="left:1.5%;top:44%;animation-delay:0.4s">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path
+          d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3.2.7-4.5 2-1.3-1.3-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5C2 10.8 3.5 12.5 5 14l7 7z" />
+        <path d="M3 10h4l2-3 3 6 2-4h5" />
+      </svg>
+    </div>
+    <!-- Activity -->
+    <div class="fitness-icon" style="left:1.2%;top:70%;animation-delay:0.8s">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+      </svg>
+    </div>
+    <!-- Person Standing -->
+    <div class="fitness-icon" style="right:1.2%;top:18%;animation-delay:0.2s">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"
+        stroke-linejoin="round">
+        <circle cx="12" cy="5" r="1.6" />
+        <path d="M12 10v5" />
+        <path d="m9 21 3-6 3 6" />
+        <path d="m6.5 8 5.5 2 5.5-2" />
+      </svg>
+    </div>
+    <!-- Accessibility -->
+    <div class="fitness-icon" style="right:1.5%;top:44%;animation-delay:0.6s">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"
+        stroke-linejoin="round">
+        <circle cx="16" cy="4" r="1.6" />
+        <path d="m18 19 1-7-6 1" />
+        <path d="m5 8 3-3 5.5 3-2.4 3.5" />
+        <path d="M4.2 14.5a5 5 0 0 0 6.9 6" />
+        <path d="M13.8 17.5a5 5 0 0 0-6.9-6" />
+      </svg>
+    </div>
+    <!-- Shield Check -->
+    <div class="fitness-icon" style="right:1.2%;top:70%;animation-delay:1s">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path
+          d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.5 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z" />
+        <path d="m9 12 2 2 4-4" />
+      </svg>
+    </div>
+  </div>
+
+  <header class="nav">
+    <div>
+      <div class="logo">WORKOUT<span> WELLNESS</span></div>
+      <div class="tag" style="margin-top:-2px;text-shadow:0 1px 6px rgba(0,0,0,.7)">Your Journey to a Healthier You
+      </div>
+    </div>
+    <div class="navlinks" id="navlinks"></div>
+    <div class="navright">
+      <div style="text-align:right;line-height:1.1">
+        <div style="font-size:12px;font-weight:700" id="navName">Guest</div>
+        <div class="pill" id="navPill">SIGN IN</div>
+      </div>
+      <div class="avatar"></div>
+    </div>
+  </header>
+
+  <main>
+    <section id="sec-dashboard" class="section"></section>
+    <section id="sec-workout" class="section"></section>
+    <section id="sec-exercises" class="section"></section>
+    <section id="sec-plans" class="section"></section>
+    <section id="sec-health" class="section"></section>
+    <section id="sec-progress" class="section"></section>
+    <section id="sec-profile" class="section"></section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+
+    const ACCOUNTS = {};
+    let currentUser = null;
+    let session = null;
+    let timerInterval = null;
+
+    const CONDITIONS = [
+      { key: 'knee_injury', label: 'Knee Injury' },
+      { key: 'back_pain', label: 'Back Pain' },
+      { key: 'shoulder_injury', label: 'Shoulder Injury' },
+      { key: 'hip_injury', label: 'Hip Injury' },
+      { key: 'ankle_injury', label: 'Ankle Injury' },
+      { key: 'wrist_injury', label: 'Wrist Injury' },
+      { key: 'sciatica', label: 'Sciatica' },
+      { key: 'arthritis', label: 'Arthritis' },
+      { key: 'osteoporosis', label: 'Osteoporosis' },
+      { key: 'plantar_fasciitis', label: 'Plantar Fasciitis' },
+      { key: 'carpal_tunnel', label: 'Carpal Tunnel Syndrome' },
+      { key: 'heart_condition', label: 'Heart Condition' },
+      { key: 'hypertension', label: 'Hypertension' },
+      { key: 'high_cholesterol', label: 'High Cholesterol' },
+      { key: 'asthma', label: 'Asthma' },
+      { key: 'copd', label: 'COPD' },
+      { key: 'diabetes', label: 'Diabetes' },
+      { key: 'obesity', label: 'Obesity' },
+      { key: 'thyroid_disorder', label: 'Thyroid Disorder' },
+      { key: 'pregnancy', label: 'Pregnancy' },
+      { key: 'epilepsy', label: 'Epilepsy' },
+      { key: 'anxiety_disorder', label: 'Anxiety Disorder' },
+      { key: 'vertigo', label: 'Vertigo / Balance Issues' },
+      { key: 'chronic_fatigue', label: 'Chronic Fatigue' },
+    ];
+    const CONDITION_NOTES = {
+      knee_injury: 'High knee-load movements can aggravate a knee injury — a low-impact alternative is shown instead.',
+      back_pain: 'Heavy hip-hinge and loaded-spine movements can strain the lower back.',
+      shoulder_injury: 'Overhead pressing/pulling under load can stress an injured shoulder.',
+      hip_injury: 'Deep hip flexion under load can aggravate a hip injury.',
+      ankle_injury: 'Jumping and unstable-surface work can stress an injured ankle.',
+      wrist_injury: 'Wrist-loading movements (push-ups, front squats) can aggravate a wrist injury.',
+      sciatica: 'Loaded spinal flexion and heavy hip-hinge movements can irritate the sciatic nerve.',
+      arthritis: 'High-impact, repetitive joint loading can flare arthritis.',
+      osteoporosis: 'Spinal flexion under load and high fall-risk movements carry fracture risk.',
+      plantar_fasciitis: 'Running and jumping can aggravate plantar fasciitis.',
+      carpal_tunnel: 'Sustained wrist-loading grips can aggravate carpal tunnel symptoms.',
+      heart_condition: 'High-intensity intervals raise cardiac demand quickly — moderate work is safer.',
+      hypertension: 'Heavy straining can spike blood pressure — keep breathing steady, avoid max-effort lifts.',
+      high_cholesterol: 'Sustained moderate cardio is generally favored over sporadic maximal efforts.',
+      asthma: 'Sudden high-intensity cardio can trigger bronchoconstriction — warm up gradually.',
+      copd: 'High-intensity or breath-holding efforts can worsen breathlessness.',
+      diabetes: 'Intense exertion affects blood sugar — monitor levels around workouts.',
+      obesity: 'High-impact movements add extra joint stress — low-impact options are more sustainable.',
+      thyroid_disorder: 'Heart-rate response to exercise can be affected — pace intensity to how you feel.',
+      pregnancy: 'Flat-back, deep abdominal, or high fall-risk movements are generally discouraged.',
+      epilepsy: 'High fall-risk or unsupervised exercises carry added risk.',
+      anxiety_disorder: 'Very high-intensity efforts can mimic panic sensations for some people.',
+      vertigo: 'Rapid head movements or inversions can trigger dizziness.',
+      chronic_fatigue: 'Overexertion can trigger crashes — favor shorter, lower-intensity sessions.',
+    };
+
+    const EXERCISES = [
+      { id: 1, name: 'Incline Dumbbell Press', cat: 'CHEST', tag: 'STRENGTH', level: 'ADVANCED', equip: 'DUMBBELLS', contra: ['shoulder_injury', 'wrist_injury'], video: 'https://www.youtube.com/embed/QEY2z5LtB9Y', desc: 'Targets the upper chest. Keep elbows at 45°.' },
+      { id: 2, name: 'Weighted Pull-Ups', cat: 'BACK', tag: 'STRENGTH', level: 'EXPERT', equip: 'BODYWEIGHT+', contra: ['shoulder_injury', 'back_pain', 'carpal_tunnel'], video: 'https://www.youtube.com/embed/QZue7F_Zk3A', desc: 'Compound lat and pulling-power builder.' },
+      { id: 3, name: 'Kettlebell Swings', cat: 'FULL BODY', tag: 'HIIT', level: 'INTERMEDIATE', equip: 'KETTLEBELL', contra: ['back_pain', 'heart_condition', 'sciatica'], video: 'https://www.youtube.com/embed/sSESeQAir2M', desc: 'Explosive hip-hinge posterior chain work.' },
+      { id: 4, name: 'Pigeon Pose', cat: 'MOBILITY', tag: 'YOGA', level: 'BEGINNER', equip: 'MAT', contra: ['hip_injury'], video: 'https://www.youtube.com/embed/0_zPqA65Nok', desc: 'Deep hip flexor and rotator stretch.' },
+      { id: 5, name: 'Barbell Back Squat', cat: 'LEGS', tag: 'STRENGTH', level: 'ADVANCED', equip: 'BARBELL', contra: ['knee_injury', 'back_pain', 'hip_injury', 'osteoporosis'], video: 'https://www.youtube.com/embed/8PMjqgR8Wa8', desc: 'Foundational quad, glute and core builder.' },
+      { id: 6, name: 'Battle Ropes', cat: 'CARDIO', tag: 'HIIT', level: 'INTERMEDIATE', equip: 'ROPES', contra: ['heart_condition', 'shoulder_injury', 'asthma', 'copd'], video: 'https://www.youtube.com/embed/CzxBf5jM3M4', desc: 'Build muscle and strength with structured high-volume workouts and effective training.' },
+      { id: 7, name: 'Bodyweight Glute Bridge', cat: 'LEGS', tag: 'STRENGTH', level: 'BEGINNER', equip: 'NONE', contra: [], video: 'https://www.youtube.com/embed/wPM8icPu6H8', desc: 'Joint-friendly posterior-chain builder — a safe squat alternative.' },
+      { id: 8, name: 'Seated Cable Row', cat: 'BACK', tag: 'STRENGTH', level: 'BEGINNER', equip: 'MACHINE', contra: ['carpal_tunnel'], video: 'https://www.youtube.com/embed/xQNrFHEMhI4', desc: 'Supported, spine-friendly back thickness builder.' },
+    ];
+    const LEVEL_TIER = { BEGINNER: 1, INTERMEDIATE: 2, ADVANCED: 3, EXPERT: 4 };
+    const USER_TIER = { beginner: 1, intermediate: 2, advanced: 3 };
+    function annotateExercise(ex, user) {
+      let caution = null;
+      for (const c of (user.conditions || [])) { if (ex.contra.includes(c)) { caution = CONDITION_NOTES[c]; break; } }
+      const levelOk = (LEVEL_TIER[ex.level] || 2) <= (USER_TIER[user.fitnessLevel] || 1) + 1;
+      return { ...ex, recommended: !caution && levelOk, caution };
+    }
+
+    const PLANS = [
+      { id: 0, name: 'Active Recovery & Mobility', level: 'BEGINNER', color: '#1f4a5c', weeks: 4, freq: '4 Days/Week', focus: 'Mobility & Low-Impact Strength', desc: 'Gentle movement and mobility training to improve flexibility, recovery, and overall fitness.', contra: [], progression: ['Week 1: Learn the movements at an easy pace', 'Week 2: Add gentle strength holds', 'Week 3: Extend session length slightly', 'Week 4: Consistency check-in, no intensity increase'] },
+      { id: 1, name: 'Foundation 101', level: 'BEGINNER', color: '#1f5c3a', weeks: 4, freq: '3 Days/Week', focus: 'Mobility & Form', desc: 'Build core strength and healthy habits with simple exercises designed for beginners.', contra: [], progression: ['Week 1: Learn movement patterns with light load', 'Week 2: Add light resistance', 'Week 3: Increase reps, same load', 'Week 4: First light progression test'] },
+      { id: 2, name: 'Hypertrophy Max', level: 'INTERMEDIATE', color: '#333', weeks: 8, freq: '5 Days/Week', focus: 'Muscle Growth', desc: 'Build muscle and strength with structured high-volume workouts and effective training.', popular: true, contra: ['knee_injury', 'shoulder_injury', 'back_pain'], progression: ['Weeks 1-3: Volume accumulation', 'Weeks 4-6: Intensity increase', 'Weeks 7-8: Peak week, then deload'] },
+      { id: 3, name: 'Elite Powerlifting', level: 'ADVANCED', color: '#5c1f2a', weeks: 12, freq: '6 Days/Week', focus: 'Maximum Strength', desc: 'Develop maximum strength with structured training focused on Squat, Bench, and Deadlift.', contra: ['knee_injury', 'back_pain', 'shoulder_injury', 'hip_injury', 'hypertension', 'heart_condition', 'osteoporosis'], progression: ['Weeks 1-4: Base strength', 'Weeks 5-8: Intensification', 'Weeks 9-11: Peaking', 'Week 12: Taper & test new maxes'] },
+    ];
+    const SCHEDULE = {
+      0: [['MON', 'Gentle Mobility Flow', 'FULL BODY', 0], ['TUE', 'Rest', 'RECOVERY', 1], ['WED', 'Low-Impact Strength', 'BODYWEIGHT', 0], ['THU', 'Breathing & Stretch', 'MOBILITY', 0], ['FRI', 'Rest', 'RECOVERY', 1], ['SAT', 'Gentle Mobility Flow', 'FULL BODY', 0], ['SUN', 'Rest', 'RECOVERY', 1]],
+      1: [['MON', 'Full Body A', 'LIGHT STRENGTH', 0], ['TUE', 'Rest', 'RECOVERY', 1], ['WED', 'Full Body B', 'LIGHT STRENGTH', 0], ['THU', 'Mobility Flow', 'STRETCH', 0], ['FRI', 'Full Body C', 'LIGHT STRENGTH', 0], ['SAT', 'Rest', 'RECOVERY', 1], ['SUN', 'Rest', 'RECOVERY', 1]],
+      2: [['MON', 'Push A', 'CHEST/TRI', 0], ['TUE', 'Pull A', 'BACK/BI', 0], ['WED', 'Lower A', 'QUADS', 0], ['THU', 'Rest', 'OPTIONAL', 1], ['FRI', 'Upper B', 'MIX', 0], ['SAT', 'Lower B', 'CHAIN', 0], ['SUN', 'Rest', 'RECOVERY', 1]],
+      3: [['MON', 'Squat Focus', 'MAX STRENGTH', 0], ['TUE', 'Bench Focus', 'MAX STRENGTH', 0], ['WED', 'Active Recovery', 'MOBILITY', 0], ['THU', 'Deadlift Focus', 'MAX STRENGTH', 0], ['FRI', 'Accessory Work', 'HYPERTROPHY', 0], ['SAT', 'Technique & Speed', 'LIGHT LOAD', 0], ['SUN', 'Rest', 'RECOVERY', 1]],
+    };
+    // Maps every scheduled training day to the exact exercise IDs (from
+    // EXERCISES) it contains, so Plans stays connected to Workout — the
+    // index of each inner array lines up 1:1 with SCHEDULE[planId].
+    const PLAN_DAY_EXERCISES = {
+      0: [[4], [], [7], [4], [], [4, 7], []],
+      1: [[7, 8], [], [8, 7], [4], [7, 8], [], []],
+      2: [[1], [2, 8], [5], [], [1, 2], [3, 5], []],
+      3: [[5], [1], [4], [3], [2, 8], [6], []],
+    };
+    function annotatePlan(p, user) {
+      let caution = null;
+      for (const c of (user.conditions || [])) { if (p.contra.includes(c)) { caution = CONDITION_NOTES[c]; break; } }
+      const levelOk = (LEVEL_TIER[p.level] || 2) <= (USER_TIER[user.fitnessLevel] || 1) + 1;
+      return { ...p, recommended: !caution && levelOk, caution };
+    }
+
+    function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(window.__tt); window.__tt = setTimeout(() => t.classList.remove('show'), 2400); }
+
+    const PAGES = ['dashboard', 'workout', 'exercises', 'plans', 'health', 'progress', 'profile'];
+    const LABELS = { dashboard: 'Dashboard', workout: 'Workout', exercises: 'Exercises', plans: 'Plans', health: 'Health', progress: 'Progress', profile: 'Profile' };
+    function nav(page) {
+      if (page !== 'profile' && !currentUser) { toast('Sign in first — redirecting to Profile'); page = 'profile'; }
+      PAGES.forEach(p => document.getElementById('sec-' + p).classList.toggle('active', p === page));
+      document.querySelectorAll('#navlinks a').forEach(a => a.classList.toggle('active', a.dataset.page === page));
+      render[page]();
+    }
+    document.getElementById('navlinks').innerHTML = PAGES.map(p => `<a data-page="${p}" onclick="nav('${p}')">${LABELS[p].toUpperCase()}</a>`).join('');
+    function refreshNavUser() {
+      document.getElementById('navName').textContent = currentUser ? currentUser.name : 'Guest';
+      document.getElementById('navPill').textContent = currentUser ? 'MEMBER' : 'SIGN IN';
+    }
+    function pct(n, d) { return d ? Math.round(n / d * 100) : 0; }
+    function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+    function fmt(sec) { const m = Math.floor(sec / 60), s = sec % 60; return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`; }
+    // Real, always-available YouTube thumbnail — far more reliable than an
+    // embedded iframe player (no autoplay/consent/frame restrictions).
+    // Tries the high-quality thumb first; onerror in the <img> tag below
+    // automatically falls back to the standard-quality thumb, then to a
+    // generated placeholder — so a broken/blocked thumbnail never leaves
+    // a blank box.
+    function thumbFromVideo(url) { const m = (url || '').match(/\/embed\/([^/?]+)/); return m ? `https://img.youtube.com/vi/${m[1]}/hqdefault.jpg` : ''; }
+    function thumbFallbackFromVideo(url) { const m = (url || '').match(/\/embed\/([^/?]+)/); return m ? `https://img.youtube.com/vi/${m[1]}/mqdefault.jpg` : ''; }
+    function watchUrlFromVideo(url) { return url ? url.replace('/embed/', '/watch?v=') : ''; }
+    const CAT_COLORS = { CHEST: '#ff2ea6', BACK: '#3ee6e6', LEGS: '#d4ff2b', 'FULL BODY': '#8e7cff', MOBILITY: '#5cc8ff', CARDIO: '#ff8a3e' };
+    // Inline SVG placeholder (no network dependency) shown if BOTH real
+    // thumbnails fail to load — guarantees every exercise always shows
+    // *something* instead of a blank/broken image.
+    function placeholderThumb(ex) {
+      const color = CAT_COLORS[ex.cat] || '#d4ff2b';
+      const label = esc((ex.cat || 'WORKOUT').slice(0, 14));
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="220">
+    <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#232323"/><stop offset="1" stop-color="#111"/>
+    </linearGradient></defs>
+    <rect width="400" height="220" fill="url(#g)"/>
+    <text x="200" y="165" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="${color}" text-anchor="middle">${label}</text>
+  </svg>`;
+      return 'data:image/svg+xml;base64,' + btoa(svg);
+    }
+    // Shared <img> markup for an exercise thumbnail with a graceful,
+    // two-step fallback chain: hqdefault → mqdefault → generated placeholder.
+    function exerciseThumbImg(ex, style) {
+      const hq = thumbFromVideo(ex.video);
+      const mq = thumbFallbackFromVideo(ex.video);
+      const ph = placeholderThumb(ex);
+      const alt = esc(ex.name);
+      if (!hq) return `<img src="${ph}" alt="${alt}" style="${style}">`;
+      return `<img src="${hq}" alt="${alt}" loading="lazy" style="${style}"
+    onerror="if(this.dataset.stage!=='2'){this.dataset.stage='2';this.src='${mq}';}else{this.onerror=null;this.src='${ph}';}">`;
+    }
+    function authGate(sectionId) {
+      document.getElementById(sectionId).innerHTML = `
+    <div class="" style="max-width:420px;margin:60px auto;text-align:center">
+      <div style="font-size:20px;font-weight:800;margin-bottom:10px">Sign in to continue</div>
+      <p class="tag" style="margin-bottom:18px">Your dashboard, workouts, plans, health data, and progress are all tied to your personal profile.</p>
+      <button class="btn" style="width:100%" onclick="nav('profile')">Go to Profile</button>
+    </div>`;
+    }
+
+    const render = {};
+
+    render.dashboard = () => {
+      if (!currentUser) return authGate('sec-dashboard');
+      const u = currentUser;
+      const exPct = pct(u.stats.exerciseMin, u.stats.exerciseGoal);
+      document.getElementById('sec-dashboard').innerHTML = `
+    <div class="badge lime" style="margin-bottom:12px">● LIVE SYSTEM ACTIVE</div>
+    <h1>Train <span style="color:var(--lime);font-style:italic">Hard.</span> Track <span style="color:var(--muted)">Smart.</span></h1>
+    <p class="sub">Welcome back, ${u.name}. Everything below is synced from Workout, Health, and Progress.</p>
+    <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+      <button class="btn" onclick="nav('workout')">▶ Go to Workout</button>
+      <button class="btn secondary" onclick="nav('plans')">Explore Plans</button>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="grid" style="grid-template-columns:1fr 1fr;margin-bottom:14px">
+          <div class="stat-card"><div class="label">TOTAL WORKOUTS</div><div class="value">${u.totalWorkouts}</div></div>
+          <div class="stat-card cyan"><div class="label">CALORIES TODAY</div><div class="value">${u.stats.caloriesBurned} kcal</div></div>
+          <div class="stat-card pink"><div class="label">STREAK</div><div class="value">${u.stats.streakDays}d — ${u.stats.streakLabel}</div></div>
+          <div class="stat-card"><div class="label">GOAL PROGRESS</div><div class="value">${exPct}%</div></div>
+        </div>
+        <div class="card">
+          <div style="font-weight:700;font-size:15px">Consistency (this week)</div>
+          <div class="tag" style="margin-bottom:10px">TRAINING VOLUME</div>
+          ${u.consistency.length ? `<div style="display:flex;align-items:flex-end;gap:6px;height:100px;margin-top:10px">
+            ${u.consistency.map(c => `<div style="flex:1;text-align:center"><div style="background:var(--lime);height:${Math.min(100, c.vol / 5)}px;border-radius:4px 4px 0 0"></div><div class="tag" style="margin-top:4px">${c.day}</div></div>`).join('')}
+          </div>` : '<div class="tag" style="padding:30px 0;text-align:center">No workout history yet — log a session on the Workout page.</div>'}
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-weight:700;font-size:15px;margin-bottom:10px">Today's Vitals</div>
+        <div class="row">❤️ Heart Rate<span class="v">${u.stats.heartRate} bpm</span></div>
+        <div class="row" style="border-bottom:none">🔵 Exercise Min<span class="v">${u.stats.exerciseMin} min</span></div>
+      </div>
+    </div>`;
+    };
+
+    function renderWorkoutSession() {
+      const box = document.getElementById('sessionBox');
+      if (!box) return;
+      if (!session) {
+        box.innerHTML = `
+      <div class="tag" style="margin-bottom:10px">NO ACTIVE WORKOUT</div>
+      <p class="tag" style="margin-bottom:12px">Go to <a onclick="nav('exercises')" style="color:var(--lime)">Exercises</a> and click ▶ on one, or start a generic session:</p>
+      <input type="text" id="newName" placeholder="Workout name" style="margin-bottom:8px">
+      <div style="display:flex;gap:6px;margin-bottom:8px">
+        <input type="number" id="newSets" placeholder="Sets">
+        <input type="number" id="newReps" placeholder="Target reps">
+      </div>
+      <button class="btn" style="width:100%" onclick="startGeneric()">▶ Start Workout</button>`;
+        clearInterval(timerInterval);
+        return;
+      }
+      const isActive = session.status === 'active';
+      const isPaused = session.status === 'paused';
+      const isEnded = session.status === 'ended';
+      const finalSetDone = session.currentSet >= session.totalSets;
+      const watchUrl = watchUrlFromVideo(session.video);
+      const sessEx = session.exId ? EXERCISES.find(e => e.id === session.exId) : null;
+      const hasVideo = !!session.video;
+      const mediaDisplayEx = sessEx || (hasVideo ? { name: session.name, cat: 'WORKOUT', video: session.video } : null);
+
+      box.innerHTML = `
+    <div class="tag">CURRENT SESSION</div>
+    <div style="font-size:18px;font-weight:800;margin:4px 0 2px">${session.name}</div>
+    <div class="tag" style="margin-bottom:12px">${session.goal}</div>
+    ${hasVideo ? `
+      <div style="border-radius:12px;overflow:hidden;margin-bottom:6px;background:#000;height:170px;position:relative">
+        ${session.mediaReachable === true
+            ? `<iframe src="${session.video}?rel=0&modestbranding=1" title="${esc(session.name)} video" width="100%" height="170" style="display:block;border:0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`
+            : session.mediaReachable === false
+              ? `${exerciseThumbImg(mediaDisplayEx, 'display:block;width:100%;height:170px;object-fit:cover;opacity:.45')}
+               <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:rgba(0,0,0,.4);padding:0 14px;text-align:center">
+                 <div style="font-size:22px">🎬</div>
+                 <div class="tag">Inline preview isn't available here</div>
+                 <button class="btn" style="padding:7px 16px;font-size:12px" onclick="window.open('${watchUrl}','_blank','noopener')">▶ Watch Video</button>
+               </div>`
+              : `${exerciseThumbImg(mediaDisplayEx, 'display:block;width:100%;height:170px;object-fit:cover;opacity:.45')}
+               <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+                 <div class="tag">Loading video…</div>
+               </div>`}
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+        <a href="${watchUrl}" target="_blank" rel="noopener" class="tag" style="color:var(--cyan)">Open video in new tab ↗</a>
+      </div>
+    ` : `
+      <div style="border-radius:12px;margin-bottom:10px;background:var(--panel2);border:1px dashed var(--border);height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
+        <div style="font-size:22px">🚫</div>
+        <div class="tag" style="color:var(--muted)">Media Unavailable</div>
+      </div>
+    `}
+    <div id="sessTimer" style="font-size:28px;font-weight:800;text-align:center;margin:10px 0">${fmt(session.seconds)}</div>
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <div class="stat-card" style="flex:1"><div class="label">SET</div><div class="value">${session.currentSet}/${session.totalSets}</div></div>
+      <div class="stat-card cyan" style="flex:1"><div class="label">TARGET</div><div class="value">${session.targetReps}</div></div>
+    </div>
+    <div class="stat-card pink" style="margin-bottom:12px">
+      <div class="label">REP COUNT (THIS SET) — TAP + TO COUNT</div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-top:8px">
+        <div class="value" style="font-size:28px">${session.setCount}</div>
+        <button class="btn" style="padding:12px 20px" ${!isActive ? 'disabled' : ''} onclick="incCount()">+</button>
+      </div>
+    </div>
+    <div class="tag" style="margin-bottom:12px">${session.totalReps} total reps logged this session</div>
+    <button class="btn" style="width:100%;margin-bottom:8px" ${!isActive || finalSetDone ? 'disabled' : ''} onclick="completeSet()">${isEnded ? 'Workout Stopped' : (finalSetDone ? '✓ Final Set Logged' : '✓ Complete Set')}</button>
+    <div style="display:flex;gap:8px;margin-bottom:8px">
+      ${isActive ? `<button class="btn secondary" style="flex:1" onclick="pauseSession()">⏸ Pause</button>` : ''}
+      ${isPaused ? `<button class="btn secondary" style="flex:1" onclick="resumeSession()">▶ Resume</button>` : ''}
+    </div>
+    ${!isEnded ? `<button class="btn secondary" style="width:100%;color:#ff5c5c" onclick="stopSession()">■ Stop</button>` : ''}
+    ${isEnded ? `<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+      <div class="tag" style="color:var(--cyan);margin-bottom:10px">Workout stopped — not yet saved to your profile.</div>
+      <button class="btn" style="width:100%" onclick="syncSession()">⇪ Sync to Dashboard</button>
+    </div>`: ''}
+  `;
+    }
+    window.startGeneric = () => {
+      const name = document.getElementById('newName').value.trim() || 'Workout Session';
+      const sets = parseInt(document.getElementById('newSets').value) || 4;
+      const reps = parseInt(document.getElementById('newReps').value) || 12;
+      startSession(null, name, '', sets, reps);
+    };
+    function startSession(exId, name, video, totalSets, targetReps) {
+      session = { exId, name, video, goal: `Complete ${totalSets} sets of ${targetReps} reps — ${name}`, status: 'active', currentSet: 1, totalSets, targetReps, setCount: 0, totalReps: 0, seconds: 0, mediaReachable: undefined };
+      renderWorkoutSession();
+      probeMediaReachability(session);
+      clearInterval(timerInterval);
+      timerInterval = setInterval(tickTimer, 1000);
+      toast(`Started "${name}"${video ? ' with its video' : ''}`);
+    }
+    // Iframes fire `onload` even when their request is silently blocked (by a
+    // proxy, CSP, or offline network) — so onload can't tell us whether the
+    // video actually rendered. An <img> pointed at the same video CDN DOES
+    // fire a real `onerror` on a blocked/failed request (this is what already
+    // powers the thumbnail fallback chain), so it doubles as a reliable
+    // reachability probe: only mount the real inline YouTube player once we
+    // know that CDN is actually reachable. If it isn't, we skip the iframe
+    // entirely and show a clean fallback instead of a broken/blank embed.
+    function probeMediaReachability(sess) {
+      if (!sess || !sess.video) return;
+      const testUrl = thumbFromVideo(sess.video);
+      if (!testUrl) { sess.mediaReachable = false; if (session === sess) renderWorkoutSession(); return; }
+      const img = new Image();
+      let settled = false;
+      const finish = (ok) => {
+        if (settled) return; settled = true;
+        sess.mediaReachable = ok;
+        if (session === sess) renderWorkoutSession();
+      };
+      const timer = setTimeout(() => finish(false), 5000);
+      img.onload = () => { clearTimeout(timer); finish(true); };
+      img.onerror = () => { clearTimeout(timer); finish(false); };
+      img.src = testUrl;
+    }
+    // Only patches the timer digits on each tick instead of rebuilding the
+    // whole session panel — a full re-render every second was tearing down
+    // and recreating the video/thumbnail element each time, which is what
+    // made media appear to flicker/go blank during an active workout.
+    function tickTimer() {
+      if (!session || session.status !== 'active') return;
+      session.seconds++;
+      const t = document.getElementById('sessTimer');
+      if (t) t.textContent = fmt(session.seconds); else renderWorkoutSession();
+    }
+    window.incCount = () => { if (!session || session.status !== 'active') return; session.setCount++; renderWorkoutSession(); };
+    window.completeSet = () => {
+      if (!session || session.status !== 'active') return;
+      session.totalReps += session.setCount; session.setCount = 0;
+      session.currentSet = Math.min(session.currentSet + 1, session.totalSets);
+      renderWorkoutSession();
+      toast('Set logged');
+    };
+    window.pauseSession = () => { if (!session) return; session.status = 'paused'; clearInterval(timerInterval); renderWorkoutSession(); toast('Paused'); };
+    window.resumeSession = () => {
+      if (!session) return; session.status = 'active'; renderWorkoutSession();
+      clearInterval(timerInterval);
+      timerInterval = setInterval(tickTimer, 1000);
+      toast('Resumed');
+    };
+    window.stopSession = () => {
+      if (!session) return;
+      session.totalReps += session.setCount; session.setCount = 0;
+      session.status = 'ended';
+      clearInterval(timerInterval);
+      renderWorkoutSession();
+      toast('Workout stopped — sync when ready');
+    };
+    window.syncSession = () => {
+      if (!session) return;
+      const calories = Math.round((session.seconds / 60) * 7);
+      currentUser.totalWorkouts++;
+      currentUser.stats.caloriesBurned += calories;
+      currentUser.stats.exerciseMin += Math.round(session.seconds / 60);
+      const wasZero = currentUser.stats.streakDays === 0;
+      currentUser.stats.streakDays = wasZero ? 1 : currentUser.stats.streakDays + 1;
+      currentUser.stats.streakLabel = currentUser.stats.streakDays >= 3 ? 'Building Momentum' : 'Getting Started';
+      const today = new Date().toLocaleDateString('en-US', { weekday: 'short' });
+      const existing = currentUser.consistency.find(c => c.day === today);
+      if (existing) existing.vol += session.totalReps * 10; else currentUser.consistency.push({ day: today, vol: session.totalReps * 10 });
+      currentUser.history.unshift({ name: session.name, reps: session.totalReps, minutes: Math.round(session.seconds / 60), calories, ts: Date.now(), when: new Date().toLocaleString() });
+      toast(`Synced! +${calories} kcal, ${session.totalReps} reps → Dashboard & Progress updated`);
+      session = null;
+      renderWorkoutSession();
+    };
+
+    let workoutCategory = 'ALL';
+    let workoutLevel = 'ALL';
+    render.workout = () => {
+      if (!currentUser) return authGate('sec-workout');
+      const cats = ['ALL', 'CHEST', 'BACK', 'LEGS', 'FULL BODY', 'MOBILITY', 'CARDIO'];
+      const levels = ['ALL', 'BEGINNER', 'INTERMEDIATE', 'ADVANCED', 'EXPERT'];
+      document.getElementById('sec-workout').innerHTML = `
+    <div class="two-col" style="grid-template-columns:300px 1fr">
+      <div class="card" style="text-align:center" id="sessionBox"></div>
+      <div>
+        <h1 style="font-size:22px">Exercise Library</h1>
+        ${currentUser.conditions.length ? `<div class="note">Filtering for: <b>${currentUser.conditions.map(c => CONDITIONS.find(x => x.key === c).label).join(', ')}</b> — update in <a onclick="nav('health')" style="color:var(--cyan)">Health</a>.</div>` : ''}
+        <div class="tag" style="margin-bottom:6px">BODY PART / TYPE</div>
+        <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap" id="workoutChips">
+          ${cats.map(c => `<div class="chip ${c === workoutCategory ? 'active' : ''}" data-c="${c}">${c}</div>`).join('')}
+        </div>
+        <div class="tag" style="margin-bottom:6px">LEVEL</div>
+        <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap" id="workoutLevelChips">
+          ${levels.map(l => `<div class="chip ${l === workoutLevel ? 'active' : ''}" data-l="${l}">${l}</div>`).join('')}
+        </div>
+        <div class="grid" style="grid-template-columns:1fr 1fr" id="exList"></div>
+      </div>
+    </div>`;
+      renderWorkoutSession();
+      document.querySelectorAll('#workoutChips .chip').forEach(chip => { chip.onclick = () => { workoutCategory = chip.dataset.c; render.workout(); }; });
+      document.querySelectorAll('#workoutLevelChips .chip').forEach(chip => { chip.onclick = () => { workoutLevel = chip.dataset.l; render.workout(); }; });
+      let list = workoutCategory === 'ALL' ? EXERCISES : EXERCISES.filter(e => e.cat === workoutCategory || e.tag === workoutCategory);
+      if (workoutLevel !== 'ALL') list = list.filter(e => e.level === workoutLevel);
+      document.getElementById('exList').innerHTML = list.map(exerciseCardHTML).join('') || '<div class="tag">No exercises match these filters.</div>';
+    }
+    function exerciseCardHTML(ex) {
+      const annotated = annotateExercise(ex, currentUser);
+      const flag = annotated.caution ? `<div class="warn">⚠ ${annotated.caution}</div>` : (annotated.recommended ? `<div class="rec">✓ Recommended for you</div>` : '');
+      return `
+    <div class="exercise-card">
+      <div class="exercise-img">
+        ${exerciseThumbImg(ex, 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.75')}
+        <div class="playbtn" style="position:relative" onclick="playExercise(${ex.id})">▶</div>
+        <div style="position:absolute;top:8px;left:8px;display:flex;gap:6px"><span class="badge">${ex.cat}</span><span class="badge lime">${ex.tag}</span></div>
+      </div>
+      <div class="exercise-body">
+        <b style="font-size:13px">${ex.name}</b>
+        <p class="tag" style="margin:6px 0">${ex.desc}</p>
+        <div style="display:flex;gap:10px;font-size:10px;color:var(--muted)"><span>📶 ${ex.level}</span><span>🏋 ${ex.equip}</span></div>
+        ${flag}
+      </div>
+    </div>`;
+    }
+    window.playExercise = (id) => {
+      if (session && (session.status === 'active' || session.status === 'paused')) { toast('Finish or stop your current workout before starting another.'); return; }
+      const ex = EXERCISES.find(e => e.id === id);
+      startSession(ex.id, ex.name, ex.video, 4, 12);
+    };
+
+    render.exercises = () => {
+      if (!currentUser) return authGate('sec-exercises');
+      document.getElementById('sec-exercises').innerHTML = `
+    <h1>Exercises</h1>
+    <p class="sub">Click ▶ on any exercise — it opens Workout with that exact exercise's real video already loaded.</p>
+    <div class="grid" style="grid-template-columns:repeat(4,1fr)">
+      ${EXERCISES.map(ex => `
+        <div class="exercise-card">
+          <div class="exercise-img">
+            ${exerciseThumbImg(ex, 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.75')}
+            <div class="playbtn" style="position:relative" onclick="playFromExercisesPage(${ex.id})">▶</div>
+            <div style="position:absolute;top:8px;left:8px;display:flex;gap:6px"><span class="badge">${ex.cat}</span><span class="badge lime">${ex.tag}</span></div>
+          </div>
+          <div class="exercise-body"><b style="font-size:13px">${ex.name}</b><div class="tag" style="margin-top:6px">${ex.level}</div></div>
+        </div>`).join('')}
+    </div>`;
+    };
+    window.playFromExercisesPage = (id) => {
+      if (session && (session.status === 'active' || session.status === 'paused')) { toast('Finish or stop your current workout before starting another.'); return; }
+      const ex = EXERCISES.find(e => e.id === id);
+      startSession(ex.id, ex.name, ex.video, 4, 12);
+      toast(`Starting "${ex.name}" with its video — opening Workout…`);
+      setTimeout(() => nav('workout'), 500);
+    };
+    // Plans → Workout connection: starting any exercise listed inside a
+    // plan's weekly schedule opens the Workout Session with that exact
+    // exercise (and its video) already loaded, same as starting it from
+    // the Exercise Library.
+    window.startPlanExercise = (id) => {
+      if (session && (session.status === 'active' || session.status === 'paused')) { toast('Finish or stop your current workout before starting another.'); return; }
+      const ex = EXERCISES.find(e => e.id === id);
+      if (!ex) { toast('That exercise is unavailable right now.'); return; }
+      startSession(ex.id, ex.name, ex.video, 4, 12);
+      toast(`Starting "${ex.name}" from your plan — opening Workout…`);
+      setTimeout(() => nav('workout'), 500);
+    };
+
+    render.plans = () => {
+      if (!currentUser) return authGate('sec-plans');
+      document.getElementById('sec-plans').innerHTML = `
+    <h1>Training Plans</h1>
+    <p class="sub">Ordered and flagged based on your Health Profile (fitness level: <b style="color:var(--text)">${currentUser.fitnessLevel}</b>).</p>
+    <div class="grid" style="grid-template-columns:repeat(4,1fr)" id="planGrid"></div>
+    <h2 style="margin-top:24px">Weekly Schedule <span class="tag" id="schedName"></span></h2>
+    <div class="tag" style="margin-bottom:8px">Repeats every week of the plan</div>
+    <div class="grid" style="grid-template-columns:repeat(7,1fr);gap:8px" id="schedGrid"></div>
+    <h2 style="margin-top:24px">Monthly Progression</h2>
+    <div class="card" id="progressionBox"></div>`;
+      renderPlans();
+    };
+    function renderPlans() {
+      const annotated = PLANS.map(p => annotatePlan(p, currentUser)).sort((a, b) => b.recommended - a.recommended);
+      document.getElementById('planGrid').innerHTML = annotated.map(p => {
+        const flag = p.caution ? `<div class="warn">⚠ ${p.caution}</div>` : (p.recommended ? `<div class="rec">✓ Recommended for you</div>` : '');
+        return `
+    <div class="card" style="padding:0;overflow:hidden">
+      <div style="height:70px;background:linear-gradient(135deg,#1c1c1c,#0c0c0c);padding:10px;display:flex;justify-content:space-between">
+        <span class="badge" style="background:${p.color};color:#fff">${p.level}</span>${p.popular ? '<span class="badge lime">POPULAR</span>' : ''}
+      </div>
+      <div style="padding:14px">
+        <b style="font-size:15px">${p.name}</b>
+        <p class="tag" style="margin:6px 0">${p.desc}</p>
+        ${flag}
+        <button class="btn ${currentUser.activePlan === p.id ? '' : 'secondary'}" style="width:100%;margin-top:8px;font-size:12px" onclick="enrollPlan(${p.id})">${currentUser.activePlan === p.id ? '✓ ENROLLED' : 'ENROLL'}</button>
+      </div>
+    </div>`;
+      }).join('');
+      const activeId = currentUser.activePlan;
+      const sched = SCHEDULE[activeId];
+      const plan = PLANS.find(p => p.id === activeId);
+      document.getElementById('schedName').textContent = plan ? plan.name : '';
+      const dayExIds = activeId != null ? (PLAN_DAY_EXERCISES[activeId] || []) : [];
+      document.getElementById('schedGrid').innerHTML = sched ? sched.map(([d, t, s, r], i) => {
+        const exIds = dayExIds[i] || [];
+        const dayExercises = exIds.map(id => EXERCISES.find(e => e.id === id)).filter(Boolean);
+        return `
+    <div class="card" style="padding:10px;font-size:11px">
+      <div class="tag">${d}</div><b style="font-size:12px">${t}</b><div class="tag" style="color:${r ? 'var(--muted)' : 'var(--lime)'}">${s}</div>
+      ${dayExercises.length ? `<div style="margin-top:8px;display:flex;flex-direction:column;gap:4px">
+        ${dayExercises.map(ex => `
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:4px;background:var(--panel2);border:1px solid var(--border);border-radius:6px;padding:4px 6px">
+            <span style="font-size:10px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${ex.name}</span>
+            <span class="playbtn" style="width:20px;height:20px;font-size:9px;flex:0 0 auto" onclick="startPlanExercise(${ex.id})">▶</span>
+          </div>`).join('')}
+      </div>` : (r ? '' : '<div class="tag" style="margin-top:6px;opacity:.6">No exercises assigned</div>')}
+    </div>`;
+      }).join('') : '<div class="tag">Enroll in a plan to see its schedule.</div>';
+      document.getElementById('progressionBox').innerHTML = plan ? plan.progression.map(phase => `<div class="row"><span>${phase}</span></div>`).join('') : '<div class="tag">Enroll in a plan to see its phase-by-phase progression.</div>';
+    }
+    window.enrollPlan = (id) => { currentUser.activePlan = id; toast('Enrolled in ' + PLANS.find(p => p.id === id).name); renderPlans(); };
+
+    render.health = () => {
+      if (!currentUser) return authGate('sec-health');
+      document.getElementById('sec-health').innerHTML = `
+    <h1>Health & Vitality</h1>
+    <p class="sub">Conditions here directly filter Workout recommendations.</p>
+    <div class="two-col">
+      <div class="card"><div style="display:flex;justify-content:space-between"><div class="tag">HEART RATE</div><a onclick="editHeartRate()" style="font-size:11px;color:var(--cyan);font-weight:700">EDIT</a></div><div style="font-size:24px;font-weight:800">${currentUser.stats.heartRate} BPM</div></div>
+      <div class="card"><div class="tag">EXERCISE MIN TODAY</div><div style="font-size:24px;font-weight:800">${currentUser.stats.exerciseMin}</div></div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <div style="font-weight:700;font-size:16px;margin-bottom:6px">Health Profile</div>
+      <p class="tag" style="margin-bottom:14px">General safety guidance, not medical advice — consult a healthcare provider for anything specific to you.</p>
+      <label>FITNESS LEVEL</label>
+      <div style="display:flex;gap:8px;margin-bottom:14px" id="levelChips">
+        ${['beginner', 'intermediate', 'advanced'].map(l => `<div class="chip ${currentUser.fitnessLevel === l ? 'active' : ''}" data-l="${l}">${l}</div>`).join('')}
+      </div>
+      <label>HEALTH CONDITIONS</label>
+      <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:14px" id="condChecks">
+        ${CONDITIONS.map(c => `<label style="display:flex;gap:6px;align-items:center;background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;cursor:pointer;font-size:12px">
+          <input type="checkbox" data-c="${c.key}" ${currentUser.conditions.includes(c.key) ? 'checked' : ''}> ${c.label}</label>`).join('')}
+      </div>
+      <button class="btn" onclick="saveHealthProfile()">Save Health Profile</button>
+    </div>`;
+      document.querySelectorAll('#levelChips .chip').forEach(chip => { chip.onclick = () => { currentUser.fitnessLevel = chip.dataset.l; render.health(); }; });
+    };
+    window.saveHealthProfile = () => {
+      currentUser.conditions = Array.from(document.querySelectorAll('#condChecks input:checked')).map(el => el.dataset.c);
+      toast('Health profile saved — Workout recommendations updated');
+    };
+    window.editHeartRate = () => {
+      const val = prompt('Enter your resting heart rate (BPM):', currentUser.stats.heartRate);
+      if (val === null) return;
+      const hr = parseInt(val);
+      if (isNaN(hr) || hr < 0) { toast('Enter a valid number'); return; }
+      currentUser.stats.heartRate = hr;
+      toast('Heart rate updated');
+      render.health();
+    };
+
+    let historyRange = 'daily';
+    function isSameDay(a, b) { return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(); }
+    function startOfWeek(d) { const x = new Date(d); const day = (x.getDay() + 6) % 7; x.setDate(x.getDate() - day); x.setHours(0, 0, 0, 0); return x; }
+    function filterHistory(range) {
+      const now = new Date();
+      const list = (currentUser.history || []).filter(h => typeof h.ts === 'number');
+      if (range === 'daily') return list.filter(h => isSameDay(new Date(h.ts), now));
+      if (range === 'weekly') { const start = startOfWeek(now); return list.filter(h => new Date(h.ts) >= start); }
+      if (range === 'monthly') { return list.filter(h => { const d = new Date(h.ts); return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth(); }); }
+      return list;
+    }
+    render.progress = () => {
+      if (!currentUser) return authGate('sec-progress');
+      document.getElementById('sec-progress').innerHTML = `
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">
+      <div><h1>Performance Analytics</h1><p class="sub">Workout History is written only when you Sync.</p></div>
+      <button class="btn secondary" onclick="exportData()">Export Data</button>
+    </div>
+    <div class="two-col">
+      <div class="card"><div style="font-weight:700;font-size:15px;margin-bottom:8px">Total Workouts</div><div style="font-size:32px;font-weight:800">${currentUser.totalWorkouts}</div></div>
+      <div class="card"><div style="font-weight:700;font-size:15px;margin-bottom:8px">Lifetime Calories</div><div style="font-size:32px;font-weight:800">${currentUser.stats.caloriesBurned}</div></div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+        <b style="font-size:14px">Workout History</b>
+        <div style="display:flex;gap:6px" id="rangeChips">
+          <div class="chip ${historyRange === 'daily' ? 'active' : ''}" data-r="daily">DAILY</div>
+          <div class="chip ${historyRange === 'weekly' ? 'active' : ''}" data-r="weekly">WEEKLY</div>
+          <div class="chip ${historyRange === 'monthly' ? 'active' : ''}" data-r="monthly">MONTHLY</div>
+        </div>
+      </div>
+      <div class="grid" style="grid-template-columns:repeat(4,1fr);margin-top:14px" id="rangeStats"></div>
+      <div style="margin-top:14px" id="rangeList"></div>
+    </div>`;
+      document.querySelectorAll('#rangeChips .chip').forEach(chip => { chip.onclick = () => { historyRange = chip.dataset.r; render.progress(); }; });
+      renderHistoryRange();
+    };
+    function renderHistoryRange() {
+      const items = filterHistory(historyRange);
+      const totalMin = items.reduce((s, h) => s + (h.minutes || 0), 0);
+      const totalReps = items.reduce((s, h) => s + (h.reps || 0), 0);
+      const totalCal = items.reduce((s, h) => s + (h.calories || 0), 0);
+      const rangeLabel = historyRange === 'daily' ? 'Today' : historyRange === 'weekly' ? 'This Week' : 'This Month';
+      document.getElementById('rangeStats').innerHTML = `
+    <div class="stat-card"><div class="label">WORKOUTS · ${rangeLabel.toUpperCase()}</div><div class="value">${items.length}</div></div>
+    <div class="stat-card cyan"><div class="label">DURATION</div><div class="value">${totalMin} min</div></div>
+    <div class="stat-card pink"><div class="label">REPS LOGGED</div><div class="value">${totalReps}</div></div>
+    <div class="stat-card"><div class="label">CALORIES</div><div class="value">${totalCal} kcal</div></div>`;
+      document.getElementById('rangeList').innerHTML = items.length
+        ? items.map(h => `<div class="row"><span>${h.name}</span><span class="v">${h.reps} reps · ${h.minutes} min · ${h.calories || 0} kcal · ${h.when}</span></div>`).join('')
+        : `<div class="tag" style="padding:20px 0;text-align:center">No workouts synced for ${rangeLabel.toLowerCase()} yet — go to Workout, complete a session, then Sync to Dashboard.</div>`;
+    }
+    window.exportData = () => {
+      const blob = new Blob([JSON.stringify(currentUser, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'fittrack-data.json';
+      document.body.appendChild(a); a.click(); a.remove();
+      toast('Data exported');
+    };
+
+    let authTab = 'signup';
+    render.profile = () => {
+      if (currentUser) {
+        document.getElementById('sec-profile').innerHTML = `
+      <div style="max-width:700px;margin:0 auto">
+        <div class="card" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px">
+          <div style="display:flex;gap:16px;align-items:center">
+            <div style="width:64px;height:64px;border-radius:50%;background:#333;border:2px solid var(--lime)"></div>
+            <div><div style="font-size:19px;font-weight:800">${currentUser.name}</div><div class="tag">${currentUser.email}</div>
+              <div style="display:flex;gap:16px;margin-top:6px"><div><div class="tag">WORKOUTS</div><b>${currentUser.totalWorkouts}</b></div><div><div class="tag">CALORIES</div><b>${currentUser.stats.caloriesBurned}</b></div></div>
+            </div>
+          </div>
+          <button class="btn secondary" onclick="editProfile()">Edit Profile</button>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <b>Account Settings</b>
+          <div class="row" style="margin-top:10px">Fitness Level<span class="v">${currentUser.fitnessLevel}</span></div>
+          <div class="row" style="border-bottom:none">Health Conditions<span class="v">${currentUser.conditions.length ? currentUser.conditions.length + ' set' : 'None'}</span></div>
+        </div>
+        <button class="btn secondary" style="width:100%;margin-top:14px;color:#ff5c5c" onclick="logout()">Sign Out</button>
+      </div>`;
+      } else {
+        document.getElementById('sec-profile').innerHTML = `
+      <div class="card" style="max-width:400px;margin:40px auto">
+        <div style="display:flex;gap:8px;margin-bottom:16px">
+          <button class="chip ${authTab === 'signup' ? 'active' : ''}" style="flex:1" onclick="setAuthTab('signup')">New User — Sign Up</button>
+          <button class="chip ${authTab === 'login' ? 'active' : ''}" style="flex:1" onclick="setAuthTab('login')">Existing User — Log In</button>
+        </div>
+        <div id="authForm"></div>
+      </div>`;
+        renderAuthForm();
+      }
+    };
+    window.setAuthTab = (t) => { authTab = t; render.profile(); };
+    function renderAuthForm() {
+      const el = document.getElementById('authForm');
+      if (authTab === 'signup') {
+        el.innerHTML = `
+      <label>Name</label><input type="text" id="suName" style="margin-bottom:10px">
+      <label>Email</label><input type="email" id="suEmail" style="margin-bottom:10px">
+      <label>Password (min 6 characters)</label><input type="password" id="suPassword" style="margin-bottom:12px">
+      <button class="btn" style="width:100%" onclick="doSignup()">Create Profile</button>
+      <div class="tag" style="color:var(--pink);margin-top:8px" id="authErr"></div>`;
+      } else {
+        el.innerHTML = `
+      <label>Email</label><input type="email" id="liEmail" style="margin-bottom:10px">
+      <label>Password</label><input type="password" id="liPassword" style="margin-bottom:12px">
+      <button class="btn" style="width:100%" onclick="doLogin()">Log In</button>
+      <div class="tag" style="color:var(--pink);margin-top:8px" id="authErr"></div>`;
+      }
+    }
+    window.doSignup = () => {
+      const name = document.getElementById('suName').value.trim();
+      const email = document.getElementById('suEmail').value.trim().toLowerCase();
+      const password = document.getElementById('suPassword').value;
+      const err = document.getElementById('authErr');
+      if (!name || !email || !password) { err.textContent = 'All fields are required.'; return; }
+      if (password.length < 6) { err.textContent = 'Password must be at least 6 characters.'; return; }
+      if (ACCOUNTS[email]) { err.textContent = 'An account with this email already exists.'; return; }
+      const user = {
+        name, email, password, totalWorkouts: 0, activePlan: null,
+        fitnessLevel: 'beginner', conditions: [], history: [],
+        stats: { heartRate: 0, caloriesBurned: 0, exerciseMin: 0, exerciseGoal: 45, streakDays: 0, streakLabel: 'No streak yet' },
+        consistency: [],
+      };
+      ACCOUNTS[email] = user;
+      currentUser = user;
+      toast('Welcome to Workout Wellness!');
+      refreshNavUser();
+      nav('dashboard');
+    };
+    window.doLogin = () => {
+      const email = document.getElementById('liEmail').value.trim().toLowerCase();
+      const password = document.getElementById('liPassword').value;
+      const err = document.getElementById('authErr');
+      const acct = ACCOUNTS[email];
+      if (!acct || acct.password !== password) { err.textContent = 'Invalid email or password.'; return; }
+      currentUser = acct;
+      toast('Welcome back!');
+      refreshNavUser();
+      nav('dashboard');
+    };
+    window.logout = () => {
+      currentUser = null; session = null; clearInterval(timerInterval);
+      refreshNavUser(); toast('Signed out'); nav('profile');
+    };
+    window.editProfile = () => {
+      const name = prompt('Update name:', currentUser.name);
+      if (!name) return;
+      currentUser.name = name;
+      toast('Profile updated');
+      render.profile(); refreshNavUser();
+    };
+
+    nav('profile');
+    setTimeout(() => renderAuthForm(), 0);
+  </script>
+</body>
+
+</html>
